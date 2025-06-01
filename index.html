@@ -101,6 +101,20 @@
             }
         }
     </style>
+    <link rel="manifest" href="/manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+              console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+              console.error('Service Worker registration failed:', error);
+            });
+        });
+      }
+    </script>
 </head>
 <body class="antialiased">
 
@@ -206,7 +220,7 @@
             { day: 13, dayOfWeek: 'Thursday', meals: { breakfast: "Plain Dosa with Coconut Chutney", kids: "Dosa rolls with dry potato/cabbage poriyal", ckd: "Dosa. CKD-friendly Chutney & Sambar.", snack1: "Guava / Pear (peeled) for CKD", lunch: "Vegetable Pulao with plain Dal", kids_lunch: "Vegetable Pulao", ckd_lunch: "Small portion low salt Pulao with leached veg. CKD-friendly Dal.", snack2: "Hard-boiled egg white (Family) / Consult dietitian for CKD", dinner: "Chapati with Palak Dal (Family)", ckd_dinner: "Chapati with Lauki Dal. Avoid Palak Dal." }},
             { day: 14, dayOfWeek: 'Friday', meals: { breakfast: "Idli with Peanut Chutney & Sambar", kids: "Mini Idlis with Sambar", ckd: "Idli. CKD-friendly Chutney & Sambar.", snack1: "Mango / Apple (peeled) for CKD", lunch: "Fish Fry (Family) with Brown Rice", ckd_lunch: "Brown Rice with Ridge Gourd Poriyal & Moong Dal. Avoid fish unless approved.", snack2: "Roasted Makhana", dinner: "Vegetable Kichadi with thin Dal", ckd_dinner: "Low salt Vegetable Kichadi with low-potassium veg. CKD-friendly Dal." }},
             { day: 15, dayOfWeek: 'Saturday', meals: { breakfast: "Pesarattu with Coconut Chutney", kids: "Pesarattu", ckd: "Pesarattu. CKD-friendly chutney.", snack1: "Cucumber slices", lunch: "Bisibelebath", kids_lunch: "Bisibelebath", ckd_lunch: "Small portion CKD-friendly Bisibelebath.", snack2: "Boiled Chana / Plain for CKD", dinner: "Wheat Chapati with Lauki Kootu", ckd_dinner: "Chapati. Very low salt Lauki Kootu." }},
-            { day: 16, dayOfWeek: 'Sunday', meals: { breakfast: "Pongal with Sambar", kids: "Pongal", ckd: "Very low salt Pongal. CKD-friendly Sambar.", snack1: "Buttermilk (thin, unsalted for CKD)", lunch: "Chicken Curry (Family) with Brown Rice", ckd_lunch: "Brown Rice with leached Cabbage Poriyal & Moong Dal. Avoid chicken unless approved.", snack2: "Roasted Poha Chivda / Plain for CKD", dinner: "Vegetable Rava Dosa with Vegetable Stew", ckd_dinner: "Rava Dosa. CKD-friendly Stew." }},
+            { day: 16, dayOfWeek: 'Sunday', meals: { breakfast: "Pongal with Sambar", kids: "Pongal", ckd: "Very low salt Pongal. CKD-friendly Sambar.", snack1: "Buttermilk (thin, unsalted for CKD)", lunch: "Chicken Curry with Brown Rice", ckd_lunch: "Brown Rice with leached Cabbage Poriyal & Moong Dal. Avoid chicken unless approved.", snack2: "Roasted Poha Chivda / Plain for CKD", dinner: "Vegetable Rava Dosa with Vegetable Stew", ckd_dinner: "Rava Dosa. CKD-friendly Stew." }},
             { day: 17, dayOfWeek: 'Monday', meals: { breakfast: "Semiya Upma with vegetables", kids: "Semiya Upma", ckd: "CKD-friendly Semiya Upma.", snack1: "Watermelon / Apple (peeled) for CKD", lunch: "Quinoa/Millets Upma with Rasam", kids_lunch: "Quinoa/Millets Upma", ckd_lunch: "CKD-friendly Upma & Rasam.", snack2: "Sprouted Moong Dal Salad / Plain for CKD", dinner: "Wheat Chapati with Ash Gourd Sabzi", ckd_dinner: "Chapati. Very low salt Ash Gourd Sabzi." }},
             { day: 18, dayOfWeek: 'Tuesday', meals: { breakfast: "Adai with Avial", kids: "Adai", ckd: "Adai. CKD-friendly Avial.", snack1: "Papaya", lunch: "Lemon Rice with Snake Gourd Poriyal", kids_lunch: "Lemon Rice & Snake Gourd Poriyal", ckd_lunch: "Small portion CKD-friendly Lemon Rice. Very low salt poriyal.", snack2: "Roasted Makhana", dinner: "Moong Dal Cheela with vegetable curry", ckd_dinner: "Moong Dal Cheela. CKD-friendly curry." }},
             { day: 19, dayOfWeek: 'Wednesday', meals: { breakfast: "Ragi Dosa with Coconut Chutney", kids: "Ragi Dosa", ckd: "Ragi Dosa. CKD-friendly chutney.", snack1: "Orange / Grapes for CKD", lunch: "Sambar Rice with Okra Poriyal", kids_lunch: "Sambar Rice", ckd_lunch: "Brown Rice with low salt Okra Poriyal & CKD-friendly Sambar.", snack2: "Hard-boiled egg white (Family) / Consult dietitian for CKD", dinner: "Vegetable Oats Upma with thin Dal", ckd_dinner: "CKD-friendly Oats Upma & Dal." }},
@@ -340,7 +354,8 @@
                         content.style.maxHeight = null;
                         content.style.padding = "0px";
                     } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
+                        // UPDATED LINE HERE TO ADD A BUFFER
+                        content.style.maxHeight = (content.scrollHeight + 30) + "px"; 
                         content.style.padding = "1rem";
 
                     }
@@ -431,7 +446,7 @@
 
                             header.classList.add('open');
                             icon.classList.add('rotate-180');
-                            content.style.maxHeight = content.scrollHeight + "px";
+                            content.style.maxHeight = content.scrollHeight + "px"; // This line is for calendar day click, not the general accordion logic
                             content.style.padding = "1rem";
 
                             targetAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' });
